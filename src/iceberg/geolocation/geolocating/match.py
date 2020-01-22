@@ -18,11 +18,9 @@ from ..iceberg_zmq import Publisher, Subscriber
 
 class ImageMatching(object):
 
-    def __init__(self, name, queue_in, cfg):
+    def __init__(self, name, queue_in, queue_out):
          
         self._name = name
-        self._timings = pd.DataFrame(columns=['Image','Start','End','Seals'])
-        tic = time.time()
         with open(queue_in) as fqueue:
             pub_addr_line, sub_addr_line = fqueue.readlines()
 
@@ -38,14 +36,21 @@ class ImageMatching(object):
             else:
                 RuntimeError('Subscriber address not specified in %s' % queue_in)
 
+	with open(queue_out) as fqueue:
+            pub_addr_line, _ = fqueue.readlines()
+
+            if pub_addr_line.startswith('PUB'):
+                print(pub_addr_line)
+                self._out_addr_in = pub_addr_line.split()[1]
+            else:
+                RuntimeError('Publisher address not specified in %s' % queue_out)
+
         self._publisher_in = Publisher(channel=self._name, url=self._in_addr_in)
         self._subscriber_in = Subscriber(channel=self._name, url=self._in_addr_out)
         self._subscriber_in.subscribe(topic=self._name)
+	self._publisher_out = Publisher(channel=self._name, url=self._out_addr_in)
     
-        with open(cfg) as conf:
-            self._cfg = json.load(conf)
-        toc = time.time()
-        self._timings.loc[len(self._timings)] = ['config',tic,toc,0]
+        
 
     def _connect(self):
         tic = time.time()
@@ -123,10 +128,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='validates a CNN at the haul out level')
     parser.add_argument('--name', type=str)
     parser.add_argument('--queue_in', type=str)
-    parser.add_argument('--config_file',type=str)
+    parser.add_argument('--queue_out', type=str)
     args = parser.parse_args()
 
-    pred = PenguinsPredict(name=args.name, queue_in=args.queue_in, cfg=args.config_file)
+    match = ImageMatching(name=args.name, queue_in=args.queue_in, queue_out=args.queue_out)
 
 
 
