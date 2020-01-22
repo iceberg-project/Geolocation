@@ -58,7 +58,7 @@ class ImageMatching(object):
                                                      'request': 'connect',
                                                      'type': 'receiver'})
         toc = time.time()
-        self._timings.loc[len(self._timings)] = ['connect',tic,toc,0]
+        
 
     def _disconnect(self):
         tic = time.time()
@@ -66,7 +66,7 @@ class ImageMatching(object):
                                                      'type': 'receiver',
                                                      'request': 'disconnect'})
         toc = time.time()
-        self._timings.loc[len(self._timings)] = ['disconnect',tic,toc,0]
+        
 
     def _get_image(self):
 
