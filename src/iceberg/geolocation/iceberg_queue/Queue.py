@@ -39,7 +39,7 @@ class Queue(object):
         self._dequeuers = list()
         if data:
             input_data = pd.read_csv(data)
-            self._queue = input_data['Filename'].values.tolist()
+            self._queue = input_data[{'ImageName1','ImageName2','X1','Y1','X2','Y2'}].values.tolist()
         else:
             self._queue = list()
         self._pub = None
