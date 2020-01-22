@@ -14,7 +14,7 @@ import json
 import sys
 import pandas as pd
 
-from geolcation.iceberg_zmq import Publisher, Subscriber
+from ..iceberg_zmq import Publisher, Subscriber
 
 class ImageMatching(object):
 
@@ -71,13 +71,16 @@ class ImageMatching(object):
         _, recv_message = self._subscriber_in.get()
 
         if recv_message[b'type'] == b'image':
-            return recv_message[b'data'].decode('utf-8')
+	    print recv_message
+            return recv_message[b'data']
 
         return None
 
     
     def _matching(self, img1,img2,x1,y1,x2,y2):
         
+	print ('This is matching function')
+	
 	cmd = '/home/aymen/SummerRadical/SIFT-GPU/cudasift'
 	img1 = img1
 	img2 = img2
@@ -98,22 +101,27 @@ class ImageMatching(object):
         cont = True
 
         while cont:
-            img1 = self._get_image()
-	    img2 = self._get_image()
-	    x1 = 
-	    y1 =  
-	    x2 =
-            y2 =
-            sys.stdout.flush()
+	    message = self._get_image()
+	    print ("This is the message : ", message)
+	    img1, img2, x1, y1, x2, y2 = message.split('$')
+	    print img1
+            print img2
+            print x1
+            print y1
+            print x2
+            print y2
+	    sys.stdout.flush()
 
-            if image not in ['disconnect','wait']:
+            if img1 and img2 not in ['disconnect','wait']:
                 try:
-                    print(image)
+                    print(img1)
+                    print(img2)
                     sys.stdout.flush()
                     self._match(img1,img2,x1,y1,x2,y2)
                 except:
                     sys.stdout.flush()
-                    print('Image not matched', image)
+                    print('Images are not matched :', img1,img2)
+		    
                     sys.stdout.flush()
             elif image == 'wait':
                 time.sleep(1)
