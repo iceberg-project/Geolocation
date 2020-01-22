@@ -80,21 +80,13 @@ class ImageMatching(object):
     def _matching(self, img1,img2,x1,y1,x2,y2):
         
 	print ('This is matching function')
-	
 	cmd = '/home/aymen/SummerRadical/SIFT-GPU/cudasift'
-	img1 = img1
-	img2 = img2
-	x1 = x1
-	y1 = y1
-	x2 = x2
-	y2 = y2
 	subprocess.check_call([cmd, img1, '0', '0', x1, y1, img2, '0', '0', x2, y2])
 	
        
 
     def run(self):
-        
-
+     
         
         self._connect()
 
@@ -102,28 +94,21 @@ class ImageMatching(object):
 
         while cont:
 	    message = self._get_image()
-	    print ("This is the message : ", message)
-	    img1, img2, x1, y1, x2, y2 = message.split('$')
-	    print img1
-            print img2
-            print x1
-            print y1
-            print x2
-            print y2
-	    sys.stdout.flush()
 
-            if img1 and img2 not in ['disconnect','wait']:
+            if message not in ['disconnect','wait']:
                 try:
-                    print(img1)
-                    print(img2)
-                    sys.stdout.flush()
-                    self._match(img1,img2,x1,y1,x2,y2)
+	   	    
+                    message = self._get_image()
+            	    print ("This is the message : ", message)
+            	    img1, img2, x1, y1, x2, y2 = message.split('$')
+                    self._matching(img1,img2,x1,y1,x2,y2)
+		    sys.stdout.flush()
                 except:
                     sys.stdout.flush()
                     print('Images are not matched :', img1,img2)
 		    
                     sys.stdout.flush()
-            elif image == 'wait':
+            elif message == 'wait':
                 time.sleep(1)
             else:
                 self._disconnect()
