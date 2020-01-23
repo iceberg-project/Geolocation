@@ -100,7 +100,7 @@ class RansacFilter(object):
         while cont:
             message = self._get_message()
             sys.stdout.flush()
-
+	    
             if message not in ['disconnect','wait']:
                 try:
                     print(message)
@@ -126,6 +126,6 @@ if __name__ == "__main__":
     parser.add_argument('--queue_in', type=str)
     args = parser.parse_args()
 
-    filter = RansacFilter(name=args.name, queue_in=args.queue_in)
+    filteration = RansacFilter(name=args.name, queue_in=args.queue_in)
 
-    filter.run()
+    filteration.run()
