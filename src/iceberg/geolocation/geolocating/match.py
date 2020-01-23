@@ -68,7 +68,7 @@ class ImageMatching(object):
         toc = time.time()
         
 
-    def _get_image(self):
+    def _get_message(self):
 
         self._publisher_in.put(topic='image', msg={'request': 'dequeue',
                                                    'name': self._name})
@@ -98,12 +98,11 @@ class ImageMatching(object):
         cont = True
 
         while cont:
-	    message = self._get_image()
+	    message = self._get_message()
 
             if message not in ['disconnect','wait']:
                 try:
 	   	    
-                    message = self._get_image()
             	    print ("This is the message : ", message)
             	    img1, img2, x1, y1, x2, y2 = message.split('$')
                     self._matching(img1,img2,x1,y1,x2,y2)
