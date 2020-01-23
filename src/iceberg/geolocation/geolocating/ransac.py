@@ -84,9 +84,9 @@ class RansacFilter(object):
 	subprocess.check_call([cmd, '-img1_filename', img1,'-img1_nodata','0',
                               '-img2_filename', img2, '-img2_nodata','0', matches, output_folder + '/'+ ransac_name])
 
-	self._publisher_out.put(topic='image', msg={'name': self._name,
-                                                    'request': 'enqueue',
-                                                    'data': output_folder})
+
+
+
 
 		
        

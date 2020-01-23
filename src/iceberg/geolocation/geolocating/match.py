@@ -87,8 +87,6 @@ class ImageMatching(object):
 	print ('This is matching function')
 	cmd = '/home/aymen/SummerRadical/SIFT-GPU/cudasift'
 	subprocess.check_call([cmd, img1, '0', '0', str(x1), str(y1), img2, '0', '0', str(x2), str(y2)])
-	
-       
 
     def run(self):
      
@@ -106,11 +104,13 @@ class ImageMatching(object):
             	    print ("This is the message : ", message)
             	    img1, img2, x1, y1, x2, y2 = message.split('$')
                     self._matching(img1,img2,x1,y1,x2,y2)
+		    self._publisher_out.put(topic='image', msg={'name': self._name,
+                                                    'request': 'enqueue',
+                                                    'data': message})
 		    sys.stdout.flush()
                 except:
                     sys.stdout.flush()
-                    print('Images are not matched :', img1,img2)
-		    
+                    print('Images are not matched ')
                     sys.stdout.flush()
             elif message == 'wait':
                 time.sleep(1)
