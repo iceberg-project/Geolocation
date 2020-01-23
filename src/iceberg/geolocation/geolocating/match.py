@@ -86,7 +86,7 @@ class ImageMatching(object):
         
 	print ('This is matching function')
 	cmd = '/home/aymen/SummerRadical/SIFT-GPU/cudasift'
-	subprocess.check_call([cmd, img1, '0', '0', x1, y1, img2, '0', '0', x2, y2])
+	subprocess.check_call([cmd, img1, '0', '0', str(x1), str(y1), img2, '0', '0', str(x2), str(y2)])
 	
        
 
