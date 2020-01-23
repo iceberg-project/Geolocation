@@ -65,6 +65,7 @@ class RansacFilter(object):
 
         if recv_message[b'type'] == b'image':
             return recv_message[b'data']
+	    print (recv_message[b'data'])
 
         return None
 
@@ -83,13 +84,7 @@ class RansacFilter(object):
 	cmd = '/home/aymen/SummerRadical/4DGeolocation/ASIFT/src/PHASE_3_RANSAC_FILTERING/ransac_filter.py'
 	subprocess.check_call([cmd, '-img1_filename', img1,'-img1_nodata','0',
                               '-img2_filename', img2, '-img2_nodata','0', matches, output_folder + '/'+ ransac_name])
-
-
-
-
-
-		
-       
+ 
 
     def run(self):
 
