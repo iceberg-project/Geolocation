@@ -78,10 +78,11 @@ class RansacFilter(object):
     		# directory already exists
     		pass
 	
+	ransac_name = 'ransac.csv'
 	output_folder = "/home/aymen/ransac_out"
 	cmd = '/home/aymen/SummerRadical/4DGeolocation/ASIFT/src/PHASE_3_RANSAC_FILTERING/ransac_filter.py'
 	subprocess.check_call([cmd, '-img1_filename', img1,'-img1_nodata','0',
-                              '-img2_filename', img2, '-img2_nodata','0', matches, 'ransac.csv'])
+                              '-img2_filename', img2, '-img2_nodata','0', matches, output_folder + '/'+ ransac_name])
 
 	self._publisher_out.put(topic='image', msg={'name': self._name,
                                                     'request': 'enqueue',
