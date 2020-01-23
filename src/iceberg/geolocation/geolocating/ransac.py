@@ -70,10 +70,24 @@ class RansacFilter(object):
 
     
     def _ransac(self, img1, img2, matches):
-        print ('This is Ransac matching function')
-	    cmd = '/home/aymen/SummerRadical/4DGeolocation/ASIFT/src/PHASE_3_RANSAC_FILTERING/ransac_filter.py'
-	    subprocess.check_call([cmd, '-img1_filename', img1,'-img1_nodata','0',
+
+	print ('This is Ransac matching function')
+	try:
+    		os.makedirs("/home/aymen/ransac_out")
+	except FileExistsError:
+    		# directory already exists
+    		pass
+	
+	output_folder = "/home/aymen/ransac_out"
+	cmd = '/home/aymen/SummerRadical/4DGeolocation/ASIFT/src/PHASE_3_RANSAC_FILTERING/ransac_filter.py'
+	subprocess.check_call([cmd, '-img1_filename', img1,'-img1_nodata','0',
                               '-img2_filename', img2, '-img2_nodata','0', matches, 'ransac.csv'])
+
+	self._publisher_out.put(topic='image', msg={'name': self._name,
+                                                    'request': 'enqueue',
+                                                    'data': output_folder})
+
+		
        
 
     def run(self):
