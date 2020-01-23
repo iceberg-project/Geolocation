@@ -85,8 +85,9 @@ class ImageMatching(object):
     def _matching(self, img1,img2,x1,y1,x2,y2):
         
 	print ('This is matching function')
-	cmd = '/home/aymen/SummerRadical/SIFT-GPU/cudasift'
-	subprocess.check_call([cmd, img1, '0', '0', str(x1), str(y1), img2, '0', '0', str(x2), str(y2)])
+	#cmd = '/home/aymen/SummerRadical/SIFT-GPU/cudasift'
+	#subprocess.check_call([cmd, img1, '0', '0', str(x1), 
+	#		            str(y1), img2, '0', '0', str(x2), str(y2)])
 
     def run(self):
      
@@ -96,17 +97,20 @@ class ImageMatching(object):
         cont = True
 
         while cont:
+
 	    message = self._get_message()
+	    img1, img2, x1, y1, x2, y2 = message.split('$')
 
             if message not in ['disconnect','wait']:
                 try:
 	   	    
             	    print ("This is the message : ", message)
-            	    img1, img2, x1, y1, x2, y2 = message.split('$')
-                    self._matching(img1,img2,x1,y1,x2,y2)
+            	    self._matching(img1,img2,x1,y1,x2,y2)
+		    ransac_file = '/home/aymen/CUDA_data_matches.csv'
+		    new_message = '%s$%s$%s' % (img1, img2,ransac_file)
 		    self._publisher_out.put(topic='image', msg={'name': self._name,
                                                     'request': 'enqueue',
-                                                    'data': message})
+                                                    'data': new_message})
 		    sys.stdout.flush()
                 except:
                     sys.stdout.flush()
