@@ -94,12 +94,12 @@ class RansacFilter(object):
 
         while cont:
             message = self._get_message()
-	    img1, img2, matches = message.split('$')
             sys.stdout.flush()
 	    
             if message not in ['disconnect','wait']:
                 try:
                     print(message)
+		    img1, img2, matches = message.split('$')
                     sys.stdout.flush()
                     self._ransac(img1,img2,matches)
                 except:
