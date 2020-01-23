@@ -93,7 +93,7 @@ class RansacFilter(object):
                     self._ransac(img1,img2,matches)
                 except:
                     sys.stdout.flush()
-                    print('Matches are filtered')
+                    print('Matches are not filtered')
                     sys.stdout.flush()
             elif message == 'wait':
                 time.sleep(1)
