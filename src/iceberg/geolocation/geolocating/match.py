@@ -52,6 +52,7 @@ class ImageMatching(object):
         self._subscriber_in = Subscriber(channel=self._name, url=self._in_addr_out)
         self._subscriber_in.subscribe(topic=self._name)
 	self._publisher_out = Publisher(channel=self._name, url=self._out_addr_in)
+	toc = time.time()
 	self._timings.loc[len(self._timings)] = ['configure',tic,toc,0]
     
         
