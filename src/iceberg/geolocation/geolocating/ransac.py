@@ -76,7 +76,15 @@ class RansacFilter(object):
 	print ('This is Ransac matching function')
 	print (img1, img2, matches)
 	
-	ransac_name = 'ransac.csv'
+	#Trying stupid name techinque
+	base1=os.path.basename(img1)
+	base2=os.path.basename(img2)
+	name1=os.path.splitext(base1)[0]
+	name2=os.path.splitext(base2)[0]
+
+	ransac_name = 'matchingpoints_'+name1+'_'+name2+'.csv'
+	
+	#ransac_name = 'ransac.csv'
 	output_folder = "/home/aymen/ransac_out"+'/'+ransac_name
 	cmd = 'python /home/aymen/SummerRadical/4DGeolocation/ASIFT/src/PHASE_3_RANSAC_FILTERING/ransac_filter.py'
 	os.system(cmd+' -img1_filename '+img1+' -img1_nodata '+'0'+' -img2_filename '+img2+' -img2_nodata '+'0'+' '+matches+' '+output_folder)
