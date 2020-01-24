@@ -21,7 +21,7 @@ class ImageMatching(object):
 
     def __init__(self, name, queue_in, queue_out):
         
-	self._timings = pd.DataFrame(columns=['Image','Start','End'])
+	self._timings = pd.DataFrame(columns=['Image','Start','End','Sift'])
         tic = time.time()
         self._name = name
         with open(queue_in) as fqueue:
