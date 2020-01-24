@@ -67,6 +67,7 @@ class RansacFilter(object):
             return recv_message[b'data']
 	    print (recv_message[b'data'])
 
+	print ('message not received')
         return None
 
     
@@ -74,19 +75,12 @@ class RansacFilter(object):
 
 	print ('This is Ransac matching function')
 	print (img1, img2, matches)
-	try:
-    		os.makedirs("/home/aymen/ransac_out")
-	except FileExistsError:
-    		# directory already exists
-    		pass
 	
 	ransac_name = 'ransac.csv'
-	output_folder = "/home/aymen/ransac_out"
+	output_folder = "/home/aymen/ransac_out"+ransac_name
 	cmd = 'python /home/aymen/SummerRadical/4DGeolocation/ASIFT/src/PHASE_3_RANSAC_FILTERING/ransac_filter.py'
-	os.system(cmd+' -img1_filename '+img1+' -img1_nodata '+'0'+' -img2_filename '+img2+' -img2_nodata '+'0'+' '+matches+' '+output_folder+'/'+ransac_name)
-	#subprocess.check_call([cmd, '-img1_filename', img1,'-img1_nodata','0',
-	#                              '-img2_filename', img2, '-img2_nodata','0', matches, output_folder + '/'+ ransac_name])
- 	
+	os.system(cmd+' -img1_filename '+img1+' -img1_nodata '+'0'+' -img2_filename '+img2+' -img2_nodata '+'0'+' '+matches+' '+output_folder+)
+	
 
     def run(self):
 
