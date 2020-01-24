@@ -82,7 +82,7 @@ class RansacFilter(object):
 	name1=os.path.splitext(base1)[0]
 	name2=os.path.splitext(base2)[0]
 
-	ransac_name = 'matchingpoints_'+name1+'_'+name2+'.csv'
+	ransac_name = 'ransaced_matches_'+name1+'_'+name2+'.csv'
 	
 	#ransac_name = 'ransac.csv'
 	output_folder = "/home/aymen/ransac_out"+'/'+ransac_name
