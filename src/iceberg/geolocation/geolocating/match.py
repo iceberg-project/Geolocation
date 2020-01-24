@@ -20,7 +20,9 @@ from ..iceberg_zmq import Publisher, Subscriber
 class ImageMatching(object):
 
     def __init__(self, name, queue_in, queue_out):
-         
+        
+	self._timings = pd.DataFrame(columns=['Image','Start','End'])
+        tic = time.time()
         self._name = name
         with open(queue_in) as fqueue:
             pub_addr_line, sub_addr_line = fqueue.readlines()
@@ -50,6 +52,7 @@ class ImageMatching(object):
         self._subscriber_in = Subscriber(channel=self._name, url=self._in_addr_out)
         self._subscriber_in.subscribe(topic=self._name)
 	self._publisher_out = Publisher(channel=self._name, url=self._out_addr_in)
+	self._timings.loc[len(self._timings)] = ['configure',tic,toc,0]
     
         
 
@@ -58,15 +61,27 @@ class ImageMatching(object):
         self._publisher_in.put(topic='request', msg={'name': self._name,
                                                      'request': 'connect',
                                                      'type': 'receiver'})
+       
+	
+	time.sleep(1)
+        self._publisher_out.put(topic='request', msg={'name': self._name,
+                                                      'request': 'connect',
+                                                      'type': 'sender'})
         toc = time.time()
-        
+	self._timings.loc[len(self._timings)] = ['connect',tic,toc,0]
 
     def _disconnect(self):
         tic = time.time()
         self._publisher_in.put(topic='request', msg={'name': self._name,
                                                      'type': 'receiver',
                                                      'request': 'disconnect'})
+	
+	time.sleep(1)
+        self._publisher_out.put(topic='request', msg={'name': self._name,
+                                                      'request': 'disconnect',
+                                                      'type': 'sender'})
         toc = time.time()
+	self._timings.loc[len(self._timings)] = ['disconnect',tic,toc,0]
         
 
     def _get_message(self):
@@ -122,7 +137,7 @@ class ImageMatching(object):
                     sys.stdout.flush()
             elif message == 'wait':
                 time.sleep(1)
-            else:
+	    else:
                 self._disconnect()
                 cont = False
       
