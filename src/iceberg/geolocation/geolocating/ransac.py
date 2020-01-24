@@ -82,10 +82,11 @@ class RansacFilter(object):
 	
 	ransac_name = 'ransac.csv'
 	output_folder = "/home/aymen/ransac_out"
-	cmd = '/home/aymen/SummerRadical/4DGeolocation/ASIFT/src/PHASE_3_RANSAC_FILTERING/ransac_filter.py'
-	subprocess.check_call([cmd, '-img1_filename', img1,'-img1_nodata','0',
-                              '-img2_filename', img2, '-img2_nodata','0', matches, output_folder + '/'+ ransac_name])
- 
+	cmd = 'python /home/aymen/SummerRadical/4DGeolocation/ASIFT/src/PHASE_3_RANSAC_FILTERING/ransac_filter.py'
+	os.system(cmd+' -img1_filename '+img1+' -img1_nodata '+'0'+' -img2_filename '+img2+' -img2_nodata '+'0'+' '+matches+' '+output_folder+'/'+ransac_name)
+	#subprocess.check_call([cmd, '-img1_filename', img1,'-img1_nodata','0',
+	#                              '-img2_filename', img2, '-img2_nodata','0', matches, output_folder + '/'+ ransac_name])
+ 	
 
     def run(self):
 
@@ -103,6 +104,7 @@ class RansacFilter(object):
 		    img1, img2, matches = message.split('$')
                     sys.stdout.flush()
                     self._ransac(img1,img2,matches)
+		    print('Matches are filtered')
                 except:
                     sys.stdout.flush()
                     print('Matches are not filtered')
