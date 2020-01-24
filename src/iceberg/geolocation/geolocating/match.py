@@ -125,8 +125,12 @@ class ImageMatching(object):
             	    print ("This is the message : ", message)
 		    img1, img2, x1, y1, x2, y2 = message.split('$')
             	    self._matching(img1,img2,x1,y1,x2,y2)
+		    base1=os.path.basename(img1)
+	            base2=os.path.basename(img2)
+	            name1=os.path.splitext(base1)[0]
+	            name2=os.path.splitext(base2)[0]
 		  
-		    sift_out = '/home/aymen/cuda_out/sift_matches_'+img1+'_'+img2+'.csv'
+		    sift_out = '/home/aymen/cuda_out/sift_matches_'+name1+'_'+name2+'.csv'
 		    new_message = '%s$%s$%s' % (img1, img2, sift_out)
 		    print ('New message will be sent to Q2: ', new_message)
 		    self._publisher_out.put(topic='image', msg={'name': self._name,
