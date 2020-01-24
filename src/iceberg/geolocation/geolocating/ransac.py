@@ -13,7 +13,7 @@ import random
 import json
 import sys
 import pandas as pd
-
+import subprocess
 from ..iceberg_zmq import Publisher, Subscriber
 
 class RansacFilter(object):
@@ -73,6 +73,7 @@ class RansacFilter(object):
     def _ransac(self, img1, img2, matches):
 
 	print ('This is Ransac matching function')
+	print (img1, img2, matches)
 	try:
     		os.makedirs("/home/aymen/ransac_out")
 	except FileExistsError:
