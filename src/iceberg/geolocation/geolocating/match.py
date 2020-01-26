@@ -6,6 +6,7 @@ Copyright: 2019-2020
 """
 import warnings
 import argparse
+import time
 import os
 import shutil
 import time
@@ -100,11 +101,22 @@ class ImageMatching(object):
 
     
     def _matching(self, img1,img2,x1,y1,x2,y2):
-        
+
+	# time it
+        tic = time.time()
+        count = 0
+	images = img1+'_'+img2
 	print ('This is matching function')
 	cmd = '/home/aymen/SummerRadical/SIFT-GPU/cudasift'
 	subprocess.call([cmd, img1, '0', '0', str(x1),str(y1), 
 			      img2, '0', '0', str(x2), str(y2)])
+
+	count += 1
+
+	toc = time.time()
+        elapsed = toc - tic
+	self._timings.loc[len(self._timings)] = [images,tic,toc,count]
+
         sys.stdout.flush()
 
     def run(self):
@@ -113,8 +125,9 @@ class ImageMatching(object):
         self._connect()
 
         cont = True
+	count = 0
 
-        while cont:
+	while cont:
 
 	    message = self._get_message()
 	   
@@ -136,6 +149,7 @@ class ImageMatching(object):
 		    self._publisher_out.put(topic='image', msg={'name': self._name,
                                                     'request': 'enqueue',
                                                     'data': new_message})
+		    count += 1
 		    sys.stdout.flush()
                 except:
                     sys.stdout.flush()
@@ -146,6 +160,7 @@ class ImageMatching(object):
 	    else:
                 self._disconnect()
                 cont = False
+	self._timings.to_csv(self._name + ".csv", index=False)
       
 
 

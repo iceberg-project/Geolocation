@@ -19,7 +19,7 @@ from ..iceberg_zmq import Publisher, Subscriber
 class RansacFilter(object):
 
     def __init__(self, name, queue_in):
-         
+        self._timings = pd.DataFrame(columns=['Image','Start','End','Ransac'])
         self._name = name
         tic = time.time()
         with open(queue_in) as fqueue:
@@ -40,6 +40,8 @@ class RansacFilter(object):
         self._publisher_in = Publisher(channel=self._name, url=self._in_addr_in)
         self._subscriber_in = Subscriber(channel=self._name, url=self._in_addr_out)
         self._subscriber_in.subscribe(topic=self._name)
+	toc = time.time()
+        self._timings.loc[len(self._timings)] = ['configure',tic,toc,0]
     
 
     def _connect(self):
@@ -47,6 +49,8 @@ class RansacFilter(object):
         self._publisher_in.put(topic='request', msg={'name': self._name,
                                                      'request': 'connect',
                                                      'type': 'receiver'})
+	toc = time.time()
+	self._timings.loc[len(self._timings)] = ['connect',tic,toc,0]
 
 
     def _disconnect(self):
@@ -54,6 +58,8 @@ class RansacFilter(object):
         self._publisher_in.put(topic='request', msg={'name': self._name,
                                                      'type': 'receiver',
                                                      'request': 'disconnect'})
+	toc = time.time()
+        self._timings.loc[len(self._timings)] = ['disconnect',tic,toc,0]
 
 
     def _get_message(self):
@@ -73,6 +79,10 @@ class RansacFilter(object):
     
     def _ransac(self, img1, img2, matches):
 
+
+	# time it
+        tic = time.time()
+
 	print ('This is Ransac matching function')
 	print (img1, img2, matches)
 	
@@ -88,13 +98,17 @@ class RansacFilter(object):
 	output_folder = "/home/aymen/ransac_out"+'/'+ransac_name
 	cmd = 'python /home/aymen/SummerRadical/4DGeolocation/ASIFT/src/PHASE_3_RANSAC_FILTERING/ransac_filter.py'
 	os.system(cmd+' -img1_filename '+img1+' -img1_nodata '+'0'+' -img2_filename '+img2+' -img2_nodata '+'0'+' '+matches+' '+output_folder)
-	
+
+	count += 1
+	toc = time.time()
+	self._timings.loc[len(self._timings)] = [ransac_name,tic,toc,count]
 
     def run(self):
 
         self._connect()
 
         cont = True
+	count = 0
 
         while cont:
             message = self._get_message()
@@ -117,7 +131,7 @@ class RansacFilter(object):
                 self._disconnect()
                 cont = False
 
-
+	self._timings.to_csv(self._name + ".csv", index=False)
 
 
 if __name__ == "__main__":
