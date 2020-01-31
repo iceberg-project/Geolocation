@@ -95,7 +95,7 @@ class RansacFilter(object):
 	ransac_name = 'ransaced_matches_'+name1+'_'+name2+'.csv'
 	
 	#ransac_name = 'ransac.csv'
-	output_folder = "/home/aymen/ransac_out"+'/'+ransac_name
+	output_folder = "/pylon5/mc3bggp/aymen/ransac_out"+'/'+ransac_name
 	cmd = 'python /home/aymen/SummerRadical/4DGeolocation/ASIFT/src/PHASE_3_RANSAC_FILTERING/ransac_filter.py'
 	os.system(cmd+' -img1_filename '+img1+' -img1_nodata '+'0'+' -img2_filename '+img2+' -img2_nodata '+'0'+' '+matches+' '+output_folder)
 

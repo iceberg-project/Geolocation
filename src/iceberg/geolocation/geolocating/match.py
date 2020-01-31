@@ -143,7 +143,7 @@ class ImageMatching(object):
 	            name1=os.path.splitext(base1)[0]
 	            name2=os.path.splitext(base2)[0]
 		  
-		    sift_out = '/home/aymen/cuda_out/sift_matches_'+name1+'_'+name2+'.csv'
+		    sift_out = '/pylon5/mc3bggp/aymen/cuda_out/sift_matches_'+name1+'_'+name2+'.csv'
 		    new_message = '%s$%s$%s' % (img1, img2, sift_out)
 		    print ('New message will be sent to Q2: ', new_message)
 		    self._publisher_out.put(topic='image', msg={'name': self._name,
