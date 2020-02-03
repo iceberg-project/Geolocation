@@ -19,11 +19,10 @@ from ..iceberg_zmq import Publisher
 
 class Discovery(object):
 
-    def __init__(self, name='simple',queue_out='simple',source_img=None,path=None):
+    def __init__(self, name='simple',queue_out='simple',path=None):
 
         self._name = name
-        self._src_path = source_img
-        self._trg_path = path
+        self._path = path
         with open(queue_out) as fqueue:
             pub_addr_line, _ = fqueue.readlines()
         print(pub_addr_line)
@@ -47,58 +46,63 @@ class Discovery(object):
             :filesize: Whether or not the image sizes should be inluded to the
                     dataframe. Default value: False
             """
+        colonies = ['ADAR', 'AMBU', 'ANDI', 'ANNE', 'ARDL', 'ARMS', 'AUST', 'AVIA', 'BACK',
+            'BARC', 'BATT', 'BEAG', 'BEAU', 'BECH', 'BELG', 'BERK', 'BERT', 'BIRD', 'BISC',
+            'BRAS', 'BRAT', 'BRDM', 'BRDN', 'BRDS', 'BROW', 'BSON', 'BURK', 'CBAR', 'CHRI',
+            'CIOL', 'CONT', 'CROZ', 'CURZ', 'DARB', 'DAVI', 'DEEI', 'DEMS', 'DEVI', 'DURO', 'DUTH',
+            'EARL', 'EDMO', 'EDWA', 'ETNA', 'EVEN', 'EVER', 'FERR', 'FISH', 'FRNC', 'GEPT', 'GIBS',
+            'GOSL', 'GOUR', 'HANN', 'HBAY', 'HERO', 'HOLD', 'HOLL', 'HOPE', 'IFOI', 'IVAN', 'JOUB',
+            'JULE', 'KIRB', 'KIRT', 'KUNO', 'KUZI', 'LAUF', 'LLAN', 'LONG', 'LOVI', 'LSAY', 'MACK',
+            'MADI', 'MAND', 'MART', 'MAWS', 'MBIS', 'MEDL', 'MICH', 'MIZU', 'MYAL', 'NMED', 'NORF',
+            'NVEG', 'ODBE', 'OLDH', 'OMGA', 'ONGU', 'PATE', 'PAUL', 'PCHA', 'PENG', 'PETE', 'PGEO',
+            'PIGE', 'PISL', 'PMAR', 'POSS', 'POWE', 'RAUE', 'RNVG', 'ROOK', 'RUMP', 'SAXU', 'SCUL',
+            'SHEI', 'SHLY', 'SIGA', 'STAN', 'STEN', 'SVIS', 'TAYH', 'TRYN', 'TURR', 'VESN', 'VESS',
+            'WATT', 'WAYA', 'WEDD', 'WIDE', 'WINK', 'WPEC', 'YALO', 'YTRE']
 
-        #filepaths1 = glob(self._path + '/*.tif.png')
-        #filepaths2 = glob(self._path + '/*.tif.png')
-        colonies = ['BEAU','BEDM','BRDN','BRDS','CROZ']
         dataframe=pd.DataFrame(columns=['ImageName1','ImageName2','SIZE1','SIZE2','X1','Y1','X2','Y2'])
-        for colony in colonies:
-            src_path = self._src_path+colony+'/Aerial/'
-            trg_path = self._trg_path+colony+'/Satellite/'
-            print src_path
-            print trg_path
-            for path, dirs,src_images in os.walk(src_path):
-                for img in src_images :
-                    if img.startswith("CA") and img.endswith(".tif"):
-                        img1=cv2.imread(src_path+img)
-                        print ('found Source GEOTIFF Images '+img)
-                        for path, dirs, files in os.walk(trg_path):
-                            for filename in files:
-                                if filename.startswith("WV") and filename.endswith(".tif"):
-                                    #img1=cv2.imread(args.source_img+img)
-                                    img2 = cv2.imread(trg_path+filename)
-                                    size1 = int(math.ceil(os.path.getsize(src_path+img)/(1024*1024)))
-                                    size2 = int(math.ceil(os.path.getsize(trg_path+filename)/(1024*1024)))
-                                    print ('found Target GEOTIFF Images '+filename)
-                                    try:
-                                            session_data = {
-                                                                    'ImageName1'      : src_path+img,
-                                                                    'ImageName2'      : trg_path+filename,
-                                                                    'SIZE1'           : size1,
-                                                                    'SIZE2'           : size2,
-                                                                    'X1'              : img1.shape[0],
-                                                                    'Y1'              : img1.shape[1],
-                                                                    'X2'              : img2.shape[0],
-                                                                    'Y2'              : img2.shape[1]
-                                                            }
-                                    except Exception as e:
-                                                            print e
-                                                            session_data = {
-                                                                    'ImageName1'      : src_path+img,
-                                                                    'ImageName2'      : trg_path+filename,
-                                                                    'SIZE1'           : size1,
-                                                                    'SIZE2'           : size2,
-                                                                    'X1'              : img1.shape[0],
-                                                                    'Y1'              : img1.shape[1],
-                                                                    'X2'              : img2.shape[0],
-                                                                    'Y2'              : img2.shape[1]
-                                                            }
-                                                            pass
-                                                        
-                                    dataframe =  dataframe.append(session_data, ignore_index=True)
-                                    #dataframe =  dataframe.reset_index().drop('index', axis=1)
-                                    #dataframe.to_csv('Desc1CSV.csv',index=False)
-        self.dataset = dataframe
+        data_path = path
+        for image in os.listdir(data_path):
+            print (image)
+            for colony in range(1, len(colonies)):
+                if image.startswith('['+colonies[colony]+']'):
+                    print ('found Source GEOTIFF Images '+ data_path+image)
+                    img1=cv2.imread(data_path+image)
+                    for image2 in os.listdir(data_path):
+                        if image2.startswith('['+colonies[colony]+']'):
+                            img2 = cv2.imread(data_path+image2)
+                            size1 = int(math.ceil(os.path.getsize(data_path+image)/(1024*1024)))
+                            size2 = int(math.ceil(os.path.getsize(data_path+image2)/(1024*1024)))
+                            print ('found Target GEOTIFF Images '+ data_path+image2)
+                            try:
+                                    session_data = {
+                                                            'ImageName1'      : data_path+image,
+                                                            'ImageName2'      : data_path+image2,
+                                                            'SIZE1'           : size1,
+                                                            'SIZE2'           : size2,
+                                                            'X1'              : img1.shape[0],
+                                                            'Y1'              : img1.shape[1],
+                                                            'X2'              : img2.shape[0],
+                                                            'Y2'              : img2.shape[1]
+                                                    }
+                            except Exception as e:
+                                                    print (e)
+                                                    session_data = {
+                                                            'ImageName1'      : data_path+image,
+                                                            'ImageName2'      : data_path+image2,
+                                                            'SIZE1'           : size1,
+                                                            'SIZE2'           : size2,
+                                                            'X1'              : img1.shape[0],
+                                                            'Y1'              : img1.shape[1],
+                                                            'X2'              : img2.shape[0],
+                                                            'Y2'              : img2.shape[1]
+                                                    }
+                                                    pass
+
+                            dataframe =  dataframe.append(session_data, ignore_index=True)
+                            #dataframe =  dataframe.reset_index().drop('index', axis=1)
+                            #dataframe.to_csv('Desc1CSV.csv',index=False)
+        dataset = dataframe
+                
 
 
 
@@ -137,7 +141,6 @@ class Discovery(object):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('source_img', type=str)
     parser.add_argument('path', type=str)
     parser.add_argument('name', type=str)
     parser.add_argument('queue_file', type=str)
@@ -145,5 +148,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     discovery = Discovery(name=args.name, queue_out=args.queue_file,
-                          source_img=args.source_img,path=args.path)
+                          path=args.path)
     discovery.run()
