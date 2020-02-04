@@ -79,10 +79,10 @@ class Discovery(object):
                                                             'ImageName2'      : data_path+image2,
                                                             'SIZE1'           : size1,
                                                             'SIZE2'           : size2,
-                                                            'X1'              : img1.shape[0],
-                                                            'Y1'              : img1.shape[1],
-                                                            'X2'              : img2.shape[0],
-                                                            'Y2'              : img2.shape[1]
+                                                            'X1'              : img1.shape[1],
+                                                            'Y1'              : img1.shape[0],
+                                                            'X2'              : img2.shape[1],
+                                                            'Y2'              : img2.shape[0]
                                                     }
                             except Exception as e:
                                                     print (e)
@@ -91,10 +91,10 @@ class Discovery(object):
                                                             'ImageName2'      : data_path+image2,
                                                             'SIZE1'           : size1,
                                                             'SIZE2'           : size2,
-                                                            'X1'              : img1.shape[0],
-                                                            'Y1'              : img1.shape[1],
-                                                            'X2'              : img2.shape[0],
-                                                            'Y2'              : img2.shape[1]
+                                                            'X1'              : img1.shape[1],
+                                                            'Y1'              : img1.shape[0],
+                                                            'X2'              : img2.shape[1],
+                                                            'Y2'              : img2.shape[0]
                                                     }
                                                     pass
 
