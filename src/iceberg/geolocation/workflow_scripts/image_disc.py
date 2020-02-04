@@ -101,7 +101,7 @@ class Discovery(object):
                             dataframe =  dataframe.append(session_data, ignore_index=True)
                             #dataframe =  dataframe.reset_index().drop('index', axis=1)
                             #dataframe.to_csv('Desc1CSV.csv',index=False)
-        dataset = dataframe
+        self.dataset = dataframe
                 
 
 
