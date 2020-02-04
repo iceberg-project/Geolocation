@@ -60,7 +60,7 @@ class Discovery(object):
             'WATT', 'WAYA', 'WEDD', 'WIDE', 'WINK', 'WPEC', 'YALO', 'YTRE']
 
         dataframe=pd.DataFrame(columns=['ImageName1','ImageName2','SIZE1','SIZE2','X1','Y1','X2','Y2'])
-        data_path = path
+        data_path = self._path
         for image in os.listdir(data_path):
             print (image)
             for colony in range(1, len(colonies)):
