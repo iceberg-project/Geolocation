@@ -45,19 +45,19 @@ class Discovery(object):
             :filesize: Whether or not the image sizes should be inluded to the
                     dataframe. Default value: False
             """
-        colonies = ['ADAR', 'AMBU', 'ANDI', 'ANNE', 'ARDL', 'ARMS', 'AUST', 'AVIA', 'BACK',
-                    'BARC', 'BATT', 'BEAG', 'BEAU', 'BECH', 'BELG', 'BERK', 'BERT', 'BIRD', 'BISC',
-                    'BRAS', 'BRAT', 'BRDM', 'BRDN', 'BRDS', 'BROW', 'BSON', 'BURK', 'CBAR', 'CHRI',
-                    'CIOL', 'CONT', 'CROZ', 'CURZ', 'DARB', 'DAVI', 'DEEI', 'DEMS', 'DEVI', 'DURO', 'DUTH',
-                    'EARL', 'EDMO', 'EDWA', 'ETNA', 'EVEN', 'EVER', 'FERR', 'FISH', 'FRNC', 'GEPT', 'GIBS',
-                    'GOSL', 'GOUR', 'HANN', 'HBAY', 'HERO', 'HOLD', 'HOLL', 'HOPE', 'IFOI', 'IVAN', 'JOUB',
-                    'JULE', 'KIRB', 'KIRT', 'KUNO', 'KUZI', 'LAUF', 'LLAN', 'LONG', 'LOVI', 'LSAY', 'MACK',
-                    'MADI', 'MAND', 'MART', 'MAWS', 'MBIS', 'MEDL', 'MICH', 'MIZU', 'MYAL', 'NMED', 'NORF',
-                    'NVEG', 'ODBE', 'OLDH', 'OMGA', 'ONGU', 'PATE', 'PAUL', 'PCHA', 'PENG', 'PETE', 'PGEO',
-                    'PIGE', 'PISL', 'PMAR', 'POSS', 'POWE', 'RAUE', 'RNVG', 'ROOK', 'RUMP', 'SAXU', 'SCUL',
-                    'SHEI', 'SHLY', 'SIGA', 'STAN', 'STEN', 'SVIS', 'TAYH', 'TRYN', 'TURR', 'VESN', 'VESS',
-                    'WATT', 'WAYA', 'WEDD', 'WIDE', 'WINK', 'WPEC', 'YALO', 'YTRE']
-
+        #colonies = ['ADAR', 'AMBU', 'ANDI', 'ANNE', 'ARDL', 'ARMS', 'AUST', 'AVIA', 'BACK',
+        #            'BARC', 'BATT', 'BEAG', 'BEAU', 'BECH', 'BELG', 'BERK', 'BERT', 'BIRD', 'BISC',
+        #            'BRAS', 'BRAT', 'BRDM', 'BRDN', 'BRDS', 'BROW', 'BSON', 'BURK', 'CBAR', 'CHRI',
+        #            'CIOL', 'CONT', 'CROZ', 'CURZ', 'DARB', 'DAVI', 'DEEI', 'DEMS', 'DEVI', 'DURO', 'DUTH',
+        #            'EARL', 'EDMO', 'EDWA', 'ETNA', 'EVEN', 'EVER', 'FERR', 'FISH', 'FRNC', 'GEPT', 'GIBS',
+        #            'GOSL', 'GOUR', 'HANN', 'HBAY', 'HERO', 'HOLD', 'HOLL', 'HOPE', 'IFOI', 'IVAN', 'JOUB',
+        #            'JULE', 'KIRB', 'KIRT', 'KUNO', 'KUZI', 'LAUF', 'LLAN', 'LONG', 'LOVI', 'LSAY', 'MACK',
+        #            'MADI', 'MAND', 'MART', 'MAWS', 'MBIS', 'MEDL', 'MICH', 'MIZU', 'MYAL', 'NMED', 'NORF',
+        #            'NVEG', 'ODBE', 'OLDH', 'OMGA', 'ONGU', 'PATE', 'PAUL', 'PCHA', 'PENG', 'PETE', 'PGEO',
+        #            'PIGE', 'PISL', 'PMAR', 'POSS', 'POWE', 'RAUE', 'RNVG', 'ROOK', 'RUMP', 'SAXU', 'SCUL',
+        #            'SHEI', 'SHLY', 'SIGA', 'STAN', 'STEN', 'SVIS', 'TAYH', 'TRYN', 'TURR', 'VESN', 'VESS',
+        #            'WATT', 'WAYA', 'WEDD', 'WIDE', 'WINK', 'WPEC', 'YALO', 'YTRE']
+        colonies = ['ADAR', 'AMBU', 'ANDI', 'ANNE', 'ARDL']
         dataframe = pd.DataFrame(columns=['ImageName1', 'ImageName2', 'SIZE1', 'SIZE2', 'X1', 'Y1', 'X2', 'Y2'])
         data_path = self._path
         for image in os.listdir(data_path):
