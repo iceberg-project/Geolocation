@@ -57,11 +57,14 @@ class ImageMatching(object):
         self._publisher_in.put(topic='request', msg={'name': self._name,
                                                      'request': 'connect',
                                                      'type': 'receiver'})       
-    
+        _, recv_message = self._subscriber_in.get()
+        print(recv_message)
         time.sleep(1)
         self._publisher_out.put(topic='request', msg={'name': self._name,
                                                       'request': 'connect',
                                                       'type': 'sender'})
+        time.sleep(5)
+        
         toc = time.time()
         self._timings.loc[len(self._timings)] = ['connect', tic, toc, 0]
 
@@ -74,6 +77,7 @@ class ImageMatching(object):
         self._publisher_out.put(topic='request', msg={'name': self._name,
                                                       'request': 'disconnect',
                                                       'type': 'sender'})
+        time.sleep(5)
         toc = time.time()
         self._timings.loc[len(self._timings)] = ['disconnect', tic, toc, 0]
 
@@ -98,6 +102,7 @@ class ImageMatching(object):
         images = img1+'_'+img2
         print('This is matching function')
         cmd = '/home/aymen/SummerRadical/SIFT-GPU/cudasift'
+        time.sleep(1)
         subprocess.call([cmd, img1, '0', '0', str(x1), str(y1), img2, '0', '0', str(x2), str(y2)])
 
         count += 1
