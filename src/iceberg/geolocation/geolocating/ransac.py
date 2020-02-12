@@ -42,6 +42,8 @@ class RansacFilter(object):
         self._publisher_in.put(topic='request', msg={'name': self._name,
                                                      'request': 'connect',
                                                      'type': 'receiver'})
+        print('Sent receiver connect message')
+        sys.stdout.flush()
         toc = time.time()
         self._timings.loc[len(self._timings)] = ['connect', tic, toc, 0]
 
@@ -83,8 +85,8 @@ class RansacFilter(object):
         name2 = os.path.splitext(base2)[0]
 
         ransac_name = 'ransaced_matches_'+name1+'_'+name2+'.csv'
-        output_folder = "/pylon5/mc3bggp/aymen/ransac_out"+'/'+ransac_name
-        cmd = 'python /home/aymen/SummerRadical/4DGeolocation/ASIFT/src/PHASE_3_RANSAC_FILTERING/ransac_filter.py'
+        output_folder = "/pylon5/mc3bggp/paraskev/gpuSift/ransac_out/"+ransac_name
+        cmd = 'python /pylon5/mc3bggp/paraskev/gpuSift/4DGeolocation/ASIFT/src/PHASE_3_RANSAC_FILTERING/ransac_filter.py'
         os.system(cmd+' -img1_filename '+img1+' -img1_nodata '+'0'+' -img2_filename '+img2+' -img2_nodata '+'0'+' '+matches+' '+output_folder)
         count += 1
         toc = time.time()

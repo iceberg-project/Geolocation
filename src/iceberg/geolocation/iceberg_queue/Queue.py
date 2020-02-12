@@ -37,11 +37,14 @@ class Queue(object):
         self._delay = 0.0
         self._enqueuers = list()
         self._dequeuers = list()
+        self._queue = list()
         if data:
             input_data = pd.read_csv(data)
-            self._queue = input_data[{'ImageName1','ImageName2','X1','Y1','X2','Y2'}].values.tolist()
-        else:
-            self._queue = list()
+            for _, row in input_data.iterrows():
+                message = '%s$%s$%s$%s$%s$%s' % (row['ImageName1'], row['ImageName2'], row['X1'], row['Y1'], row['X2'], row['Y2'])
+                print message
+                self._queue.append(message)
+        
         self._pub = None
         self._sub = None
         self._pubsub_bridge = None
@@ -72,6 +75,7 @@ class Queue(object):
         self._sub = Subscriber(channel=self._name, url=self._addr_out)
         self._sub.subscribe(topic='request')
         self._sub.subscribe(topic='image')
+        print('Queue is up: %s' % time.time())
 
 
     def _connect(self, send_rec, name):

@@ -56,15 +56,15 @@ class ImageMatching(object):
         tic = time.time()
         self._publisher_in.put(topic='request', msg={'name': self._name,
                                                      'request': 'connect',
-                                                     'type': 'receiver'})       
-        _, recv_message = self._subscriber_in.get()
-        print(recv_message)
+                                                     'type': 'receiver'})
+        print('Sent receiver connect message')
         time.sleep(1)
         self._publisher_out.put(topic='request', msg={'name': self._name,
                                                       'request': 'connect',
                                                       'type': 'sender'})
-        time.sleep(5)
-        
+        time.sleep(1)
+        print('Sent sender connect message')
+        sys.stdout.flush()
         toc = time.time()
         self._timings.loc[len(self._timings)] = ['connect', tic, toc, 0]
 
@@ -72,12 +72,15 @@ class ImageMatching(object):
         tic = time.time()
         self._publisher_in.put(topic='request', msg={'name': self._name,
                                                      'type': 'receiver',
-                                                     'request': 'disconnect'}) 
+                                                     'request': 'disconnect'})
+        print('Sent receiver disconnect message') 
         time.sleep(1)
         self._publisher_out.put(topic='request', msg={'name': self._name,
                                                       'request': 'disconnect',
                                                       'type': 'sender'})
+        print('Sent sender disconnect message')
         time.sleep(5)
+        sys.stdout.flush()
         toc = time.time()
         self._timings.loc[len(self._timings)] = ['disconnect', tic, toc, 0]
 
@@ -101,8 +104,7 @@ class ImageMatching(object):
         count = 0
         images = img1+'_'+img2
         print('This is matching function')
-        cmd = '/home/aymen/SummerRadical/SIFT-GPU/cudasift'
-        time.sleep(1)
+        cmd = '/pylon5/mc3bggp/paraskev/gpuSift/CudaSift/cudasift'
         subprocess.call([cmd, img1, '0', '0', str(x1), str(y1), img2, '0', '0', str(x2), str(y2)])
 
         count += 1
@@ -131,7 +133,7 @@ class ImageMatching(object):
                     name1 = os.path.splitext(base1)[0]
                     name2 = os.path.splitext(base2)[0]
  
-                    sift_out = '/pylon5/mc3bggp/aymen/cuda_out/sift_matches_'+name1+'_'+name2+'.csv'
+                    sift_out = '/pylon5/mc3bggp/paraskev/cuda_out/sift_matches_'+name1+'_'+name2+'.csv'
                     new_message = '%s$%s$%s' % (img1, img2, sift_out)
                     print('New message will be sent to Q2: ', new_message)
                     self._publisher_out.put(topic='image', msg={'name': self._name,
